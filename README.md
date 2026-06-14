@@ -9,31 +9,29 @@
 
 ## Domain
 
-<!-- What topic or category of knowledge does your system cover?
-     Why is this knowledge valuable, and why is it hard to find through official channels?
-     Example: "Student reviews of CS professors at [university] — useful because official
-     course descriptions don't reflect teaching style, exam difficulty, or workload." -->
+Berkeley study spots — where to work on campus and nearby, and what each place is actually like (noise, outlets, WiFi, hours, crowding). Official channels (library homepages, campus maps) list locations and hours but not the practical details students care about: which room in Doe stays quiet, which café has outlets after 9pm, or which hidden spots empty out during finals. That knowledge lives in Reddit threads, student blogs, and one-off guides — scattered, inconsistent, and hard to search in one place.
 
 ---
 
 ## Document Sources
 
-<!-- List every source you collected documents from.
-     Be specific: include URLs, subreddit names, forum thread titles, or file names.
-     Aim for variety — sources that together cover different subtopics or perspectives. -->
-
 | # | Source | Type | URL or file path |
 |---|--------|------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| 1 | r/berkeley — study spots thread | Reddit thread | https://www.reddit.com/r/berkeley/comments/cnr8wb/study_spots_in_berkeley/ · `documents/01_reddit_study_spots.txt` |
+| 2 | life.berkeley.edu — top 5 library study spots | Student blog | https://life.berkeley.edu/top-5-library-study-spots/ · `documents/02_life_top_5_libraries.txt` |
+| 3 | life.berkeley.edu — library crawl | Student blog | https://life.berkeley.edu/library-crawl/ · `documents/03_life_library_crawl.txt` |
+| 4 | visit.berkeley.edu — study spots that empty at night | Campus news | https://visit.berkeley.edu/news/study-spot-suggestions-campus · `documents/04_visit_night_study_spots.txt` |
+| 5 | visit.berkeley.edu — underground spots | Campus news | https://visit.berkeley.edu/news/best-underground-spots-campus · `documents/05_visit_underground_spots.txt` |
+| 6 | life.berkeley.edu — hidden study spots | Student blog | https://life.berkeley.edu/hidden-study-spots · `documents/06_life_hidden_spots.txt` |
+| 7 | life.berkeley.edu — Northside study spots | Student blog | https://life.berkeley.edu/northside-study-spots · `documents/07_life_northside_cafes.txt` |
+| 8 | life.berkeley.edu — Elmwood study spots | Student blog | https://life.berkeley.edu/best-elmwood-study-spots/ · `documents/08_life_elmwood_cafes.txt` |
+| 9 | life.berkeley.edu — campus café list | Student blog | https://life.berkeley.edu/cal-campus-cafe-list · `documents/09_life_campus_cafe_list.txt` |
+| 10 | visit.berkeley.edu — café ranking (outlets/WiFi) | Campus news | https://visit.berkeley.edu/node/603 · `documents/10_visit_cafe_ranking.txt` |
+| 11 | visit.berkeley.edu — best coffee shops | Campus news | https://visit.berkeley.edu/news/best-coffee-shops-berkeley · `documents/11_visit_best_coffee_shops.txt` |
+| 12 | visit.berkeley.edu — coffee cartographer | Campus news | https://visit.berkeley.edu/news/cals-coveted-caffeine-contributors · `documents/12_visit_coffee_cartographer.txt` |
+| 13 | life.berkeley.edu — late night in Berkeley | Student blog | https://life.berkeley.edu/late-night-in-berkeley · `documents/13_life_late_night.txt` |
+| 14 | Berkeley Law — mindfulness guide to peaceful spots | PDF | https://www.law.berkeley.edu/files/Mindfulness_Initiative_Guide_to_Peaceful_Campus_Spots(1).pdf · `documents/14_law_mindfulness_guide.pdf` |
+| 15 | Simons Institute — restaurant recommendations | Institute page | https://simons.berkeley.edu/berkeley-restaurant-recommendations · `documents/15_simons_restaurants.txt` |
 
 ---
 
