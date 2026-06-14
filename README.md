@@ -30,7 +30,7 @@ Berkeley study spots — where to work on campus and nearby, and what each place
 | 11 | visit.berkeley.edu — best coffee shops | Campus news | https://visit.berkeley.edu/news/best-coffee-shops-berkeley · `documents/11_visit_best_coffee_shops.txt` |
 | 12 | visit.berkeley.edu — coffee cartographer | Campus news | https://visit.berkeley.edu/news/cals-coveted-caffeine-contributors · `documents/12_visit_coffee_cartographer.txt` |
 | 13 | life.berkeley.edu — late night in Berkeley | Student blog | https://life.berkeley.edu/late-night-in-berkeley · `documents/13_life_late_night.txt` |
-| 14 | Berkeley Law — mindfulness guide to peaceful spots | PDF | https://www.law.berkeley.edu/files/Mindfulness_Initiative_Guide_to_Peaceful_Campus_Spots(1).pdf · `documents/14_law_mindfulness_guide.pdf` |
+| 14 | Berkeley Law — mindfulness guide to peaceful spots | Text (extracted from PDF) | https://www.law.berkeley.edu/files/Mindfulness_Initiative_Guide_to_Peaceful_Campus_Spots(1).pdf · `documents/14_law_mindfulness_guide.txt` |
 | 15 | Simons Institute — restaurant recommendations | Institute page | https://simons.berkeley.edu/berkeley-restaurant-recommendations · `documents/15_simons_restaurants.txt` |
 
 ---
