@@ -167,21 +167,21 @@ flowchart LR
 
 **Milestone 3 — Ingestion and chunking:**
 
-- **Tool:** Cursor (Claude)
+- **Tool:** Claude
 - **Input:** Documents table, Chunking Strategy section, Architecture diagram, and sample excerpts from `02_life_top_5_libraries.txt` (structured library section) and `01_reddit_study_spots.txt` (noisy Reddit UI)
 - **Expected output:** `load_documents()` to read all files from `documents/`, `clean_text()` with Reddit/boilerplate stripping, and `chunk_text()` implementing structure-first splitting with 400–600 char target and 80–100 char overlap
 - **Verification:** Print one fully cleaned document and confirm no Upvote/HTML artifacts remain; print 5 sample chunks and confirm Ishi Court is self-contained; record total chunk count (target 80–150)
 
 **Milestone 4 — Embedding and retrieval:**
 
-- **Tool:** Cursor (Claude)
+- **Tool:** Claude
 - **Input:** Retrieval Approach section, Architecture diagram, and chunk output format from Milestone 3
 - **Expected output:** Script to embed chunks with `SentenceTransformer("all-MiniLM-L6-v2")`, persist to ChromaDB with `source` and `chunk_index` metadata, and a `retrieve(query, k=5)` function returning chunk text, source filename, and distance score
 - **Verification:** Run 3 evaluation questions from this plan; confirm top results are on-topic with distance below ~0.5; write a one-sentence relevance explanation for at least 2 queries
 
 **Milestone 5 — Generation and interface:**
 
-- **Tool:** Cursor (Claude)
+- **Tool:** Claude
 - **Input:** Project grounding requirements (context-only answers, source attribution, refusal when insufficient), retrieved chunk format, and Gradio skeleton from assignment instructions
 - **Expected output:** `ask(question)` returning `{answer, sources}`, a system prompt that enforces grounding and declines out-of-scope questions, and `app.py` Gradio UI wiring query → answer + sources
 - **Verification:** Test 2–3 eval questions end-to-end with visible source citations; ask an out-of-scope question (e.g., "Best study spot at Stanford?") and confirm the system refuses rather than hallucinating; confirm answers trace to retrieved chunk text, not generic advice
