@@ -1,9 +1,6 @@
 # The Unofficial Guide — Project 1
 
-> **How to use this template:**
-> Complete each section *after* you've built and tested the corresponding part of your system.
-> Do not write placeholder text — if a section isn't done yet, leave it blank and come back.
-> Every section below is required for submission. One-liners will not receive full credit.
+A RAG system that makes Berkeley study-spot knowledge searchable: libraries, cafés, hidden corners, and late-night options, grounded in student blogs and guides.
 
 ---
 
@@ -37,65 +34,151 @@ Berkeley study spots — where to work on campus and nearby, and what each place
 
 ## Chunking Strategy
 
-<!-- Describe your chunking approach with enough specificity that someone else could reproduce it.
-     Include:
-     - Chunk size (characters or tokens) and why that size fits your documents
-     - Overlap size and why (or why not) you used overlap
-     - Any preprocessing you did before chunking (e.g., stripping HTML, removing headers)
-     - What your final chunk count was across all documents -->
+**Chunk size:** ~400–600 characters (~80–120 tokens), hard max ~700 characters before forcing a split within a section.
 
-**Chunk size:**
-
-**Overlap:**
+**Overlap:** ~80–100 characters (~15–20%), implemented by carrying the last paragraph of the previous chunk into the next when a section is split.
 
 **Why these choices fit your documents:**
 
-**Final chunk count:**
+My corpus mixes location-based guides, short café blurbs, directory lists, and a Reddit thread. A single fixed character split would either break a library section mid-thought or merge unrelated spots. I used **structure-aware chunking**: split on document structure first (numbered headings, `---` separators, spot/café headers, Reddit replies), then apply the character size cap.
+
+Preprocessing before chunking: strip Reddit UI tokens (`Upvote`, `Reply`, etc.), remove image-caption boilerplate (`A collage of…`, `decorative image`), collapse extra blank lines, and parse `Source:` headers into metadata (excluded from chunk body).
+
+**Final chunk count:** 123 chunks across 15 documents (within the 80–150 target from `planning.md`).
+
+### Sample chunks
+
+**Chunk 1 — `05_visit_underground_spots.txt` (chunk 1)**
+> 1. Ishi Court — Hidden in the bowels of Dwinelle Hall, Ishi Court is a beautiful courtyard… I'd recommend entering Dwinelle through the North entrance and going straight into Ishi Court.
+
+**Chunk 2 — `02_life_top_5_libraries.txt` (chunk 12)**
+> 1. Moffitt Library — Open 8 a.m. to 10 p.m.… Popularity well-deserved. Are you shocked to see Moffitt as the number one study spot?
+
+**Chunk 3 — `07_life_northside_cafes.txt` (chunk 1)**
+> Delah Coffee: Eye-catching and bougie… Arabian coffee for less than $5… barstool seating between outlets… 10/10 for studious vibes!
+
+**Chunk 4 — `13_life_late_night.txt` (chunk 1)**
+> Open until 2 a.m.: Main Stacks. 24 hours: Moffitt (Note: Moffitt Library is closed for renovations starting in January 2025.)
+
+**Chunk 5 — `10_visit_cafe_ranking.txt` (chunk 4)**
+> 4. Delah Coffee — Close to Northside of campus on Euclid Avenue… perfect place for an impromptu study session with friends.
 
 ---
 
 ## Embedding Model
 
-<!-- Name the embedding model you used and explain your choice.
-     Then answer: if you were deploying this system for real users and cost wasn't a constraint,
-     what tradeoffs would you weigh in choosing a different model?
-     Consider: context length limits, multilingual support, accuracy on domain-specific text,
-     latency, and local vs. API-hosted. -->
-
-**Model used:**
+**Model used:** `all-MiniLM-L6-v2` via `sentence-transformers`, embedded into ChromaDB with cosine distance. Runs locally with no API key.
 
 **Production tradeoff reflection:**
+
+If cost were not a constraint, I would test stronger models like `bge-small-en-v1.5` or `e5-base-v2` for better matching on short opinion text and campus nicknames ("Main Stacks", "Soda"). Longer-context embeddings would help if I kept whole library sections unsplit. Multilingual embeddings would matter for non-English reviews. MiniLM's advantage is zero API cost and low latency locally; hosted models add billing and network latency but scale better for concurrent users. Embeddings cannot fix stale facts — Moffitt's renovation closure appears inconsistently across sources, which is a corpus freshness problem.
+
+---
+
+## Retrieval Tests
+
+Tested with `python test_retrieval.py` (top-k=5). Below are three evaluation queries with top results and why they are relevant.
+
+### Query: "Which libraries stay open until 2 a.m.?" (distance 0.28)
+
+**Top chunk:** `13_life_late_night.txt` — lists library hours by closing time, including "Open until 2 a.m.: Main Stacks."
+
+**Why relevant:** The query asks about late-night library hours; this chunk directly answers with a structured hours list from the late-night guide.
+
+### Query: "Where is Ishi Court and how do students recommend finding it?" (distance 0.29)
+
+**Top chunk:** `06_life_hidden_spots.txt` — describes Ishi Court as a hidden courtyard inside Dwinelle Hall.
+
+**Second chunk:** `05_visit_underground_spots.txt` — recommends entering Dwinelle through the North entrance.
+
+**Why relevant:** Together these chunks cover location (Dwinelle) and navigation advice (North entrance), matching both parts of the question.
+
+### Query: "What do students say about Delah Coffee as a Northside study spot?" (distance 0.30)
+
+**Top chunk:** `10_visit_cafe_ranking.txt` — ranks Delah on Euclid as a staple for impromptu study sessions.
+
+**Second chunk:** `07_life_northside_cafes.txt` — describes Delah's vibe, outlets, quiet music, and Arabian coffee under $5.
+
+**Why relevant:** Both chunks are student-written descriptions of Delah specifically as a Northside study café.
 
 ---
 
 ## Grounded Generation
 
-<!-- Explain how your system enforces grounding — how does it prevent the LLM from answering
-     beyond the retrieved documents?
-     Describe both your system prompt (what instruction you gave the model) and any structural
-     choices (e.g., how you formatted the context, whether you filtered low-relevance chunks).
-     Do not just say "I told it to use the documents" — show the actual instruction or explain
-     the mechanism. -->
-
 **System prompt grounding instruction:**
 
+The system prompt in `query.py` instructs the model to:
+1. Answer ONLY from provided document excerpts
+2. Respond with exactly *"I don't have enough information on that."* if excerpts are insufficient
+3. Cite source filenames when stating facts
+4. Not invent study spots, hours, or opinions
+
+Additionally, if the best retrieved chunk has cosine distance > 0.65, the pipeline returns the refusal message without calling the LLM.
+
 **How source attribution is surfaced in the response:**
+
+- Retrieved chunks are labeled `[Source: filename | chunk N]` in the prompt context
+- The system prompt requires the model to cite filenames in the answer text
+- If the model omits citations, `ask()` appends `Sources: filename1, filename2, ...` programmatically
+- The Gradio UI shows a separate **Retrieved from** field listing all source files used
+
+---
+
+## Example Responses
+
+**Query:** Where is Ishi Court and how do students recommend finding it?
+
+**Answer:** Ishi Court is located in Dwinelle Hall [06_life_hidden_spots.txt, 05_visit_underground_spots.txt]. To find it, students recommend entering Dwinelle through the North entrance and going straight into Ishi Court… [05_visit_underground_spots.txt]
+
+**Retrieved from:** `05_visit_underground_spots.txt`, `06_life_hidden_spots.txt`
+
+---
+
+**Query:** Which libraries stay open until 2 a.m.?
+
+**Answer:** The Main Stacks library stays open until 2 a.m. [13_life_late_night.txt]
+
+**Retrieved from:** `13_life_late_night.txt`, `02_life_top_5_libraries.txt`, `04_visit_night_study_spots.txt`
+
+---
+
+**Out-of-scope query:** What is the best study spot at Stanford?
+
+**Answer:** I don't have enough information on that.
+
+---
+
+## Query Interface
+
+**Interface:** Gradio web UI (`python app.py`), opens at `http://localhost:7860`
+
+**Input:** Text box labeled "Your question" — plain-language questions about Berkeley study spots.
+
+**Output:**
+- **Answer** — grounded response with inline source citations
+- **Retrieved from** — bullet list of source filenames used
+
+**Sample interaction:**
+
+| Field | Content |
+|-------|---------|
+| **Question** | What do students say about Delah Coffee as a Northside study spot? |
+| **Answer** | Delah Coffee is described as a staple for impromptu study sessions [10_visit_cafe_ranking.txt] and a 10/10 for studious vibes with quiet music and comfy seating [07_life_northside_cafes.txt]. |
+| **Retrieved from** | • 07_life_northside_cafes.txt • 10_visit_cafe_ranking.txt • 12_visit_coffee_cartographer.txt |
 
 ---
 
 ## Evaluation Report
 
-<!-- Run your 5 test questions from planning.md through your system and record the results.
-     Be honest — a partially accurate or inaccurate result that you explain well is more
-     valuable than a suspiciously perfect result. -->
+Run with `python run_evaluation.py`. Results saved to `data/evaluation_results.json`.
 
 | # | Question | Expected answer | System response (summarized) | Retrieval quality | Response accuracy |
 |---|----------|-----------------|------------------------------|-------------------|-------------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | Which library is ranked #1 for study spots and why? | Moffitt — longest hours, variety of spaces, outlets; renovation note | "I don't have enough information on that." Top retrieval was generic library intro from `04_visit_night_study_spots.txt` (dist 0.37); Moffitt #1 chunk not in top 5 | Partially relevant | Partially accurate |
+| 2 | Which libraries stay open until 2 a.m.? | Main Stacks until 2 a.m.; Moffitt 24h with renovation note | Correctly states Main Stacks until 2 a.m. [13_life_late_night.txt]. Does not mention Moffitt 24h note | Relevant | Partially accurate |
+| 3 | Where is Ishi Court and how do students recommend finding it? | Courtyard in Dwinelle; enter via North entrance | Correct location in Dwinelle and North entrance directions with citations | Relevant | Accurate |
+| 4 | What do students say about Delah Coffee as a Northside study spot? | Euclid, outlets, quiet music, Arabian coffee <$5, bougie vibe | Mentions studious vibes, quiet music, impromptu study sessions; omits Euclid, outlets, and $5 detail | Relevant | Partially accurate |
+| 5 | What non-library spots do r/berkeley users recommend? | Brewed Awakening, Cafe Milano upstairs, Dwinelle classrooms, MLK, Boalt cafe, Soda labs | "I don't have enough information on that." Reddit doc empty; retrieval returned library/blog chunks | Off-target | Inaccurate |
 
 **Retrieval quality:** Relevant / Partially relevant / Off-target  
 **Response accuracy:** Accurate / Partially accurate / Inaccurate
@@ -104,57 +187,53 @@ Berkeley study spots — where to work on campus and nearby, and what each place
 
 ## Failure Case Analysis
 
-<!-- Identify at least one question where retrieval or generation did not work as expected.
-     Write a specific explanation of *why* it failed, tied to a part of the pipeline.
+**Question that failed:** Which library is ranked #1 for study spots and why?
 
-     "The answer was wrong" is not an explanation.
+**What the system returned:** "I don't have enough information on that." — technically correct given retrieved context, but unhelpful because the answer exists in the corpus.
 
-     "The relevant information was split across a chunk boundary, so retrieval returned
-     only half the context — the model didn't have enough to answer correctly" is an explanation.
+**Root cause (tied to a specific pipeline stage):** **Retrieval + chunking.** The Moffitt #1 chunk (`02_life_top_5_libraries.txt`, chunk 12) contains "Moffitt as the number one study spot" but ranked **#21** for this query (distance 0.52). Generic introductory chunks about "discovering the ultimate study spot" from `02` and `04` scored higher (distance ~0.37) because they share vocabulary with the question without containing the actual ranking. The Moffitt section was also split across chunks 12–14, so the "why" (hours, pods, outlets) was separated from the "#1" label.
 
-     "The embedding model treated the professor's nickname as out-of-vocabulary and returned
-     results from an unrelated review" is an explanation. -->
+**What you would change to fix it:** Keep each ranked library entry as a single chunk when under ~900 characters, or prepend a searchable prefix like "Ranked #1 study library: Moffitt" to the embedding text. Could also boost retrieval for `02_life_top_5_libraries.txt` when the query mentions "ranked" or "#1".
 
-**Question that failed:**
-
-**What the system returned:**
-
-**Root cause (tied to a specific pipeline stage):**
-
-**What you would change to fix it:**
+**Secondary failure (Q5):** `01_reddit_study_spots.txt` was never populated with thread content, so the corpus has zero Reddit chunks. Retrieval cannot surface Brewed Awakening, Cafe Milano, etc. Fix: paste the Reddit thread and rebuild chunks/index.
 
 ---
 
 ## Spec Reflection
 
-<!-- Reflect on how planning.md shaped your implementation.
-     Answer both questions with at least 2–3 sentences each. -->
-
 **One way the spec helped you during implementation:**
 
+The structure-aware chunking plan in `planning.md` prevented me from using a naive 500-character split. Specifying split rules per document type (numbered spots, `---` separators, Reddit replies) led directly to `chunking.py` functions like `_split_on_pattern()` and `_split_late_night()`. The evaluation plan's five specific questions gave concrete targets for retrieval testing before adding generation.
+
 **One way your implementation diverged from the spec, and why:**
+
+The spec targeted 80–150 chunks and I landed at 123, but the Reddit file (`01_reddit_study_spots.txt`) remained a placeholder, so the Reddit-specific cleaning and one-chunk-per-reply rule was implemented but never exercised on real data. I also added a distance-based refusal gate (distance > 0.65) in `query.py`, which was not in the original spec but prevents the LLM from hallucinating when retrieval confidence is low.
 
 ---
 
 ## AI Usage
 
-<!-- Describe at least 2 specific instances where you used an AI tool during this project.
-     For each: what did you give the AI as input, what did it produce, and what did you
-     change, override, or direct differently?
+**Instance 1 — Document pipeline (Milestone 3)**
 
-     "I used Claude to help me code" is not sufficient.
-     "I gave Claude my Chunking Strategy section from planning.md and asked it to implement
-     chunk_text(). It returned a function using a fixed character split. I overrode the
-     chunk size from 500 to 200 because my documents are short reviews, not long guides." -->
+- *What I gave the AI:* `planning.md` Documents table, Chunking Strategy section, Architecture diagram, and sample excerpts from `02_life_top_5_libraries.txt` and `01_reddit_study_spots.txt`
+- *What it produced:* Initial `ingest.py` and `chunking.py` with `load_documents()`, `clean_text()`, and structure-aware `chunk_documents()`
+- *What I changed or overrode:* Fixed curly-apostrophe handling in spot-header regex (`Women's` vs `Women's`), switched overlap from raw character tails to last-paragraph overlap after seeing mid-word fragments, and corrected section boundaries so Ishi Court chunks did not include the next spot's header
 
-**Instance 1**
+**Instance 2 — Embedding, retrieval, and generation (Milestones 4–5)**
 
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
+- *What I gave the AI:* Retrieval Approach from `planning.md`, pipeline diagram, chunk JSON format, Groq grounding requirements, and Gradio skeleton from assignment instructions
+- *What it produced:* `vector_store.py` (ChromaDB + `all-MiniLM-L6-v2`), `test_retrieval.py`, `query.py` with grounded system prompt, and `app.py` Gradio UI
+- *What I changed or overrode:* Added `NotFoundError` handling when resetting Chroma collections, programmatic source citation fallback when the LLM omits filenames, and distance-based refusal before LLM calls; verified retrieval on eval queries before wiring generation
 
-**Instance 2**
+---
 
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
+## How to Run
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env   # or create .env with GROQ_API_KEY=your_key
+python build_chunks.py
+python build_index.py
+python app.py            # Gradio UI at http://localhost:7860
+```

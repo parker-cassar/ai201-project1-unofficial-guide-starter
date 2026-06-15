@@ -1,0 +1,212 @@
+[
+  {
+    "id": 1,
+    "question": "Which library is ranked #1 for study spots and why?",
+    "answer": "I don't have enough information on that.",
+    "sources": [
+      "02_life_top_5_libraries.txt",
+      "04_visit_night_study_spots.txt"
+    ],
+    "retrieved": [
+      {
+        "source": "04_visit_night_study_spots.txt",
+        "chunk_index": 0,
+        "distance": 0.3732486963272095,
+        "text_preview": "Study Spot Suggestions on Campus\nMarch 31, 2025\nLitong D.\nI promised myself before I started school at UC Berkeley that I would never study or do work in my dorm room unless there was no other option."
+      },
+      {
+        "source": "02_life_top_5_libraries.txt",
+        "chunk_index": 1,
+        "distance": 0.3892742991447449,
+        "text_preview": "This was the burning question I asked myself as I visited all of the different libraries open to undergraduate UC Berkeley students (yes, ALL of them) to try and discover the ultimate study spot. Firs"
+      },
+      {
+        "source": "02_life_top_5_libraries.txt",
+        "chunk_index": 0,
+        "distance": 0.40026015043258667,
+        "text_preview": "The Ultimate Study Spot: Fact or Myth?\nBerkeley has the most beautiful study spots out of any place I’ve ever been. In fact, students have an almost overwhelming amount of options to choose from when "
+      },
+      {
+        "source": "04_visit_night_study_spots.txt",
+        "chunk_index": 1,
+        "distance": 0.40576058626174927,
+        "text_preview": "Jean Gray Hargrove Music Library\nThe Music Library is one of the smaller libraries on campus, and I always like to point it out while giving a campus tour. During Reading, Review, and Recitation (RRR)"
+      },
+      {
+        "source": "02_life_top_5_libraries.txt",
+        "chunk_index": 8,
+        "distance": 0.41431325674057007,
+        "text_preview": "Inside, the library is small and comfortable with shaded windows and rows of tables which can seat up to four people. There’s a secret bar table in the back with plenty of outlets for especially long "
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "question": "Which libraries stay open until 2 a.m.?",
+    "answer": "The Main Stacks library stays open until 2 a.m. [13_life_late_night.txt]",
+    "sources": [
+      "02_life_top_5_libraries.txt",
+      "04_visit_night_study_spots.txt",
+      "13_life_late_night.txt"
+    ],
+    "retrieved": [
+      {
+        "source": "13_life_late_night.txt",
+        "chunk_index": 1,
+        "distance": 0.27542614936828613,
+        "text_preview": "Many Berkeley Libraries have differing extended hours. Here are a few:\n\nOpen until 8 p.m.: Mathematics Statistics Library and the Music Library\nOpen until 9 p.m.: Law Library, Bioscience Library, and "
+      },
+      {
+        "source": "02_life_top_5_libraries.txt",
+        "chunk_index": 9,
+        "distance": 0.3741483688354492,
+        "text_preview": "2. Doe Library / Main Stacks\nDoe Library\n\nDoe open 8 a.m. to 9 p.m., Mondays to Fridays; 9 a.m. to 5 p.m. Saturdays; 1 to 9 p.m. Sundays\nMain Stacks open 9 a.m. to 10 p.m., Mondays to Fridays; 9 a.m. "
+      },
+      {
+        "source": "02_life_top_5_libraries.txt",
+        "chunk_index": 14,
+        "distance": 0.4172946810722351,
+        "text_preview": "Maybe most importantly, Moffitt has the longest stretch of open hours out of any UC Berkeley library. That automatically makes it the most accessible spot for anyone looking to get some work done or c"
+      },
+      {
+        "source": "13_life_late_night.txt",
+        "chunk_index": 0,
+        "distance": 0.4282462000846863,
+        "text_preview": "Where to Study\nSometimes that assignment or project won’t be getting done during the day. You need a study spot that is open in the after-hours, and these libraries and cafes are perfect for this.\n\nEn"
+      },
+      {
+        "source": "04_visit_night_study_spots.txt",
+        "chunk_index": 1,
+        "distance": 0.4310884475708008,
+        "text_preview": "Jean Gray Hargrove Music Library\nThe Music Library is one of the smaller libraries on campus, and I always like to point it out while giving a campus tour. During Reading, Review, and Recitation (RRR)"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "question": "Where is Ishi Court and how do students recommend finding it?",
+    "answer": "Ishi Court is located in Dwinelle Hall [06_life_hidden_spots.txt, 05_visit_underground_spots.txt]. To find it, students recommend entering Dwinelle through the North entrance and going straight into Ishi Court, as entering through the main entrance may lead to confusion and circling the hallways [05_visit_underground_spots.txt].",
+    "sources": [
+      "05_visit_underground_spots.txt",
+      "06_life_hidden_spots.txt",
+      "14_law_mindfulness_guide.txt"
+    ],
+    "retrieved": [
+      {
+        "source": "06_life_hidden_spots.txt",
+        "chunk_index": 1,
+        "distance": 0.29199862480163574,
+        "text_preview": "Ishi Court\n\nIshi Court is a hidden gem hidden in the heart of Dwinelle Hall that is the perfect place to study, relax, or eat after a long day of classes. There are a bunch of chairs and tables to eat"
+      },
+      {
+        "source": "05_visit_underground_spots.txt",
+        "chunk_index": 1,
+        "distance": 0.3356999158859253,
+        "text_preview": "1. Ishi Court\n\nHidden in the bowels of Dwinelle Hall, Ishi Court is a beautiful courtyard surrounded by orangey-pink walls and plenty of trees. It’s the perfect location to take a break in between cla"
+      },
+      {
+        "source": "14_law_mindfulness_guide.txt",
+        "chunk_index": 6,
+        "distance": 0.5450637340545654,
+        "text_preview": "C.V. Starr East Asian Library\nScene: Beautiful new library, hot\nspot for undergrad gunners\nDistance: About 0.5 miles from the\nLaw School\nGetting there: Near the North Gate\nof Campus; Cross Faculty Gla"
+      },
+      {
+        "source": "14_law_mindfulness_guide.txt",
+        "chunk_index": 7,
+        "distance": 0.5460741519927979,
+        "text_preview": "Hearst Gym\nScene: Yoga and pilates classes, right next\nto the law school. Check the RSF group\nschedule (and get a gym membership if you\ndon’t have one, $10 per semester and more\ngroup classes than you"
+      },
+      {
+        "source": "14_law_mindfulness_guide.txt",
+        "chunk_index": 1,
+        "distance": 0.574776291847229,
+        "text_preview": "Here are some suggestions for\npeaceful places to read, exercise, grab a bite or go for a stroll, many of them within 5\nminutes of the law school, and all of them open to law students (but rarely visit"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "question": "What do students say about Delah Coffee as a Northside study spot?",
+    "answer": "According to the excerpts, Delah Coffee is described as a staple for impromptu study sessions [10_visit_cafe_ranking.txt | chunk 4] and a 10/10 for studious vibes with its stunning ambiance, comfy seating, and quiet music [07_life_northside_cafes.txt | chunk 1].",
+    "sources": [
+      "07_life_northside_cafes.txt",
+      "10_visit_cafe_ranking.txt",
+      "12_visit_coffee_cartographer.txt"
+    ],
+    "retrieved": [
+      {
+        "source": "10_visit_cafe_ranking.txt",
+        "chunk_index": 4,
+        "distance": 0.2991495132446289,
+        "text_preview": "4. Delah Coffee\nClose to Northside of campus on Euclid Avenue, Delah is a staple in my rotation of cafés as they are less than a block away, so it’s the perfect place for an impromptu study session wi"
+      },
+      {
+        "source": "07_life_northside_cafes.txt",
+        "chunk_index": 1,
+        "distance": 0.3336808681488037,
+        "text_preview": "Delah Coffee: Eye-catching and bougie, this cafe is the academic equivalent of a popular nightclub. Sip on delicious Arabian coffee for less than $5 and study to the quiet music that is always playing"
+      },
+      {
+        "source": "12_visit_coffee_cartographer.txt",
+        "chunk_index": 9,
+        "distance": 0.40610384941101074,
+        "text_preview": "Finding Your Coffee Home\n\nWhat I've learned through my coffee documentation project is that Berkeley offers a diverse caffeine landscape for every preference. The methodical tracking revealed that my "
+      },
+      {
+        "source": "07_life_northside_cafes.txt",
+        "chunk_index": 2,
+        "distance": 0.41526198387145996,
+        "text_preview": "Mind Coffee: Grab a chair (or a beanbag cushion) at one of Northside’s most popular coffee shops on Euclid Ave. Known for its menu of classy signature beverages, this study spot is a small aesthetic c"
+      },
+      {
+        "source": "12_visit_coffee_cartographer.txt",
+        "chunk_index": 10,
+        "distance": 0.41767603158950806,
+        "text_preview": "For new students overwhelmed by options, I recommend starting your own coffee exploration project. There's something deeply satisfying about finding your perfect campus coffee spot—that place where th"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "question": "What non-library spots do r/berkeley users recommend for studying?",
+    "answer": "I don't have enough information on that.",
+    "sources": [
+      "02_life_top_5_libraries.txt",
+      "03_life_library_crawl.txt",
+      "04_visit_night_study_spots.txt",
+      "08_life_elmwood_cafes.txt"
+    ],
+    "retrieved": [
+      {
+        "source": "04_visit_night_study_spots.txt",
+        "chunk_index": 0,
+        "distance": 0.2560858726501465,
+        "text_preview": "Study Spot Suggestions on Campus\nMarch 31, 2025\nLitong D.\nI promised myself before I started school at UC Berkeley that I would never study or do work in my dorm room unless there was no other option."
+      },
+      {
+        "source": "08_life_elmwood_cafes.txt",
+        "chunk_index": 0,
+        "distance": 0.27909016609191895,
+        "text_preview": "Find new study spots on this beautiful stretch\nWhen I first moved to Berkeley, it wasn’t long until someone recommended that I check out Elmwood. After my first time strolling through the neighborhood"
+      },
+      {
+        "source": "04_visit_night_study_spots.txt",
+        "chunk_index": 6,
+        "distance": 0.3079749345779419,
+        "text_preview": "Of course, I encourage you to look around for your own favorite study spots. It never hurts to try a new library or look around a new building to learn more about the UC Berkeley campus! Personally, m"
+      },
+      {
+        "source": "02_life_top_5_libraries.txt",
+        "chunk_index": 1,
+        "distance": 0.3164660334587097,
+        "text_preview": "This was the burning question I asked myself as I visited all of the different libraries open to undergraduate UC Berkeley students (yes, ALL of them) to try and discover the ultimate study spot. Firs"
+      },
+      {
+        "source": "03_life_library_crawl.txt",
+        "chunk_index": 0,
+        "distance": 0.32802796363830566,
+        "text_preview": "Discover A New Study Spot at UC Berkeley\nTired of studying alone in your room? Looking to escape the hustle and bustle of the city and campus? Check out UC Berkeley’s 20+ libraries! Read on to learn a"
+      }
+    ]
+  }
+]
